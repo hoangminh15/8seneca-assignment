@@ -1,0 +1,74 @@
+databaseChangeLog:
+  - changeSet:
+      id: 2
+      author: you
+      changes:
+        - createTable:
+            tableName: task
+            columns:
+              - column:
+                  name: id
+                  type: BIGINT
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+              - column:
+                  name: name
+                  type: VARCHAR(255)
+              - column:
+                  name: description
+                  type: TEXT
+              - column:
+                  name: created_at
+                  type: TIMESTAMP
+              - column:
+                  name: status
+                  type: VARCHAR(50)
+              - column:
+                  name: user_id
+                  type: BIGINT
+                  constraints:
+                    foreignKeyName: fk_task_user
+                    references: users(id)
+
+  - changeSet:
+      id: 3
+      author: you
+      changes:
+        - createTable:
+            tableName: bug
+            columns:
+              - column:
+                  name: id
+                  type: BIGINT
+                  constraints:
+                    primaryKey: true
+                    foreignKeyName: fk_bug_task
+                    references: task(id)
+              - column:
+                  name: severity
+                  type: VARCHAR(100)
+              - column:
+                  name: steps_to_reproduce
+                  type: TEXT
+
+  - changeSet:
+      id: 4
+      author: you
+      changes:
+        - createTable:
+            tableName: feature
+            columns:
+              - column:
+                  name: id
+                  type: BIGINT
+                  constraints:
+                    primaryKey: true
+                    foreignKeyName: fk_feature_task
+                    references: task(id)
+              - column:
+                  name: business_value
+                  type: INTEGER
+              - column:
+                  name: deadline
+                  type: DATE
