@@ -18,6 +18,9 @@ import java.util.List;
 @Service
 public class TaskService {
 
+    private final String BUG = "BUG";
+    private final String FEATURE = "FEATURE";
+
     @Autowired
     private TaskRepository taskRepository;
 
@@ -61,14 +64,14 @@ public class TaskService {
     }
 
     private void validateDto(TaskRequestDto dto) {
-        if (dto.type == null || (!dto.type.equalsIgnoreCase("BUG") && !dto.type.equalsIgnoreCase("FEATURE"))) {
+        if (dto.type == null || (!dto.type.equalsIgnoreCase(BUG) && !dto.type.equalsIgnoreCase(FEATURE))) {
             throw new IllegalArgumentException("Invalid task type: " + dto.type);
         }
     }
 
     private Task mapDtoToEntity(TaskRequestDto dto) {
         switch (dto.type.toUpperCase()) {
-            case "BUG":
+            case BUG:
                 Bug bug = new Bug();
                 bug.setSeverity(dto.severity);
                 bug.setStepsToReproduce(dto.stepsToReproduce);
@@ -76,7 +79,7 @@ public class TaskService {
                 bug.setStatus(dto.status);
                 bug.setDescription(dto.description);
                 return bug;
-            case "FEATURE":
+            case FEATURE:
                 Feature feature = new Feature();
                 feature.setBusinessValue(dto.businessValue);
                 feature.setDeadline(dto.deadline);
@@ -99,11 +102,11 @@ public class TaskService {
         dto.description = task.getDescription();
 
         if (task instanceof Bug bug) {
-            dto.type = "BUG";
+            dto.type = BUG;
             dto.severity = bug.getSeverity();
             dto.stepsToReproduce = bug.getStepsToReproduce();
         } else if (task instanceof Feature feature) {
-            dto.type = "FEATURE";
+            dto.type = FEATURE;
             dto.businessValue = feature.getBusinessValue();
             dto.deadline = feature.getDeadline() != null ? feature.getDeadline().toString() : null;
         }

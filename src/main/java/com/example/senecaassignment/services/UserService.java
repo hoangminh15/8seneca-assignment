@@ -33,6 +33,7 @@ public class UserService {
     public User updateUser(Long id, User updated) {
         User user = getUser(id);
         user.setFullName(updated.getFullName());
+        user.setUsername(updated.getUsername());
         return userRepository.save(user);
     }
 
